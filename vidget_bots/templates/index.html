@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+
+// function appendText() {
+  
+  	
+//   {%for i in user%}
+//   var txt1 = "<p>{{i.first_name}}</p>";        // Create text with HTML
+//   var txt2 = $("<p></p>").text("{{i}}");  // Create text with jQuery
+//   var txt3 = document.createElement("p");
+//   txt3.innerHTML = "{{user.first_name}}";         // Create text with DOM
+//   $("body").append(txt1, txt2, txt3);
+//      // Append new elements
+//   {%endfor%}
+// };
+
+//setInterval(appendText,1000);
+
+
+// function updateByAjax()
+// {
+
+// $.ajax({
+//     url: '127.0.0.1:8000',
+//     type: 'get', // This is the default though, you don't actually need to always mention it
+//     success: function(data) {
+//         alert(data);
+//     },
+//     failure: function(data) { 
+//         alert('Got an error dude');
+//     }
+// }); 	
+// };
+
+(function worker() {
+  $.ajax({
+
+    url: '/bots_import/new_users', 
+    success: function(data) {
+      $('h1').html('');//очищаем страницу
+      data.forEach(function(entry) {//Проходим по списку jsono-в
+    console.log(entry);
+      $('h1').append(entry.first_name+"<form><button>click</button></form><br>");
+      });
+      
+      
+    },
+    complete: function() {
+      // Schedule the next request when the current one's complete
+      setTimeout(worker, 5000);
+    }
+  });
+})();
+
+</script>
+</head>
+<body>
+
+<p>This is a paragraph.</p>
+<h1></h1>
+
+</body>
+</html>
